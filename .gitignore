@@ -1,0 +1,12 @@
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Root-level build artifacts
+.dist
+
+# Claude Code memory (tool-specific, not source code)
+.claude
+
+# Logs
+*.log
