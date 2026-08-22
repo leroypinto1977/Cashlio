@@ -187,6 +187,17 @@ A quick smoke list — the surface area is large, so just exercise the main flow
       Base / GST / Landed readout splits it correctly
 - [ ] **Analytics** — margin should now read as a believable percentage (it compares
       revenue and cost both excluding GST)
+- [ ] **Credit** — give a customer a credit limit (Customers → edit), then bill them
+      taking less than the full amount. The bill should save as Part paid with a
+      balance, and the receipt should print BALANCE DUE
+- [ ] Billing a walk-in for less than the total should be refused — credit needs a
+      named customer
+- [ ] Push a customer past their limit: a cashier is blocked, a super admin is
+      offered "Authorise anyway"
+- [ ] **Split payment** — take part cash, part UPI on one bill; both should print
+- [ ] **Receivables** (new tab) — the debtor appears with ageing; record a payment
+      and watch the balance clear
+- [ ] Try voiding a bill you have collected against — it should be refused
 
 ---
 
