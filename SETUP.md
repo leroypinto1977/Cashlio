@@ -87,6 +87,21 @@ In Prisma Studio:
 
 ## 4. Set up the desktop app database (one-time)
 
+> **Upgrading an existing install?** Run this in `main-local/` after pulling:
+>
+> ```bash
+> ./scripts/upgrade-db.sh
+> ```
+>
+> It applies the schema and backfills data (brands, purchase-GST splits) in one
+> step, and is safe to re-run. Your data is preserved.
+>
+> The script passes `--accept-data-loss` to Prisma. That flag sounds alarming but
+> is required only because Prisma cannot distinguish a *widening* cast — integer
+> quantities becoming `numeric(12,3)` so pipes and cable can be sold by the metre
+> — from a narrowing one. Nothing is dropped; this was verified against a clone
+> of a populated database.
+
 `main-local`'s Prisma schema needs to be applied to `shopms_local`. Easiest path:
 
 ```bash
@@ -155,6 +170,23 @@ A quick smoke list — the surface area is large, so just exercise the main flow
 - [ ] Open the **Sales** screen — your bill appears, click into detail, try void (super admin)
 - [ ] Open the **Analytics** screen — switch period selectors, KPIs render
 - [ ] Quit and relaunch — license & data persist
+- [ ] **Settings → Shop Details** — set your GSTIN; bills should then print as "TAX INVOICE"
+- [ ] Create a bill with a **bill-level discount** — check that Subtotal, Taxable value,
+      CGST/SGST and Total all differ and add up (they used to be identical)
+- [ ] Confirm bill numbers read `INV-YYMM-NNNN` and batch codes read `BT-YYMM-NNNN`
+- [ ] Deactivate a product — it should disappear from the Active filter and show
+      under Inactive with a badge, and be restorable
+- [ ] Try saving a customer with a 9-digit phone or a wrong GSTIN — both should be
+      refused with a specific message
+- [ ] **Brands** — add a brand, use it on a product, rename it, and confirm the
+      product's brand updates too; deleting a brand still in use should be refused
+- [ ] **Cut-to-length** — create a product with "Sold as: Cut to length" and unit `m`,
+      receive 12.5 m of stock, then bill 2.75 m. Stock should read 9.75 m
+- [ ] A whole-unit product should refuse a fractional quantity
+- [ ] **Batch GST** — add a batch entering the rate *including* GST and check the
+      Base / GST / Landed readout splits it correctly
+- [ ] **Analytics** — margin should now read as a believable percentage (it compares
+      revenue and cost both excluding GST)
 
 ---
 
