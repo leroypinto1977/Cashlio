@@ -94,6 +94,16 @@ cd admin-saas
 npx prisma studio   # opens a browser at http://localhost:5555
 ```
 
+> **The console has no public sign-up.** Create your login with:
+>
+> ```bash
+> cd admin-saas
+> node scripts/seed-admin.mjs you@yourcompany.com "a long password" SUPER_ADMIN
+> ```
+>
+> It writes straight to the database, so the web server does not need to be
+> running. Only a `SUPER_ADMIN` can open the console or touch a licence.
+
 In Prisma Studio:
 
 1. Open the **`License`** model.
@@ -162,7 +172,12 @@ SAAS_API_URL=http://localhost:3000
 1. Launch **main-local** from Applications.
 2. **Activate** screen: paste the license key you created in Prisma Studio (e.g. `TEST-LICENSE-001`).
 3. **Setup profile** screen: shop name, address, GST settings.
-4. You should land on the manager dashboard. The Express API is now running on `http://127.0.0.1:52001`.
+4. **Till account** (optional, on the same screen): create a cashier login. Without one you would have to type the manager password into every till, which defeats the point of having roles at all. You can add more later under Settings.
+5. You should land on the manager dashboard. The Express API is now running on `http://127.0.0.1:52001`.
+
+The app generates its own session secret on first launch and stores it at
+`~/Library/Application Support/main-local/session.key`. Nothing secret ships
+inside the app any more, so each installation is independent.
 
 **Verify the API is up** (in another terminal):
 
@@ -213,6 +228,10 @@ A quick smoke list — the surface area is large, so just exercise the main flow
 - [ ] **Receivables** (new tab) — the debtor appears with ageing; record a payment
       and watch the balance clear
 - [ ] Try voiding a bill you have collected against — it should be refused
+- [ ] **Prices are the shop's, not the till's** — a cashier should not be able to
+      change a line's rate; a super admin should be able to, deliberately
+- [ ] **Cashier accounts** — Settings → add a till user, sign in on a terminal with
+      it, and confirm manager-only actions (void, credit limits) are refused
 - [ ] **Batch-accurate returns** — receive two batches of one product at different
       rates, sell enough to span both, then return most of it. Each batch should get
       back exactly what it gave (check under Products → the product's batches)
