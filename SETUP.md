@@ -45,6 +45,27 @@ psql -U postgres -c "CREATE DATABASE shopms_local;"
 
 ---
 
+## 2b. Generate the license signing keys (once)
+
+`.env` files are not in git — each holds secrets. Copy the examples and fill
+them in:
+
+```bash
+cp admin-saas/.env.example admin-saas/.env
+cp main-local/.env.example main-local/.env
+```
+
+Then generate the keypair that lets the desktop app trust licenses from the
+server, and paste each half where the script says:
+
+```bash
+node admin-saas/scripts/gen-license-keys.js
+```
+
+`LICENSE_PRIVATE_KEY` goes in `admin-saas/.env` and must stay secret.
+`LICENSE_PUBLIC_KEY` goes in `main-local/.env`. Also set `BETTER_AUTH_SECRET`
+and `JWT_SECRET` to long random strings — they do not need to match each other.
+
 ## 3. Start the license server (`admin-saas`)
 
 ```bash
@@ -93,22 +114,16 @@ In Prisma Studio:
 > ./scripts/upgrade-db.sh
 > ```
 >
-> It applies the schema and backfills data (brands, purchase-GST splits) in one
-> step, and is safe to re-run. Your data is preserved.
->
-> The script passes `--accept-data-loss` to Prisma. That flag sounds alarming but
-> is required only because Prisma cannot distinguish a *widening* cast — integer
-> quantities becoming `numeric(12,3)` so pipes and cable can be sold by the metre
-> — from a narrowing one. Nothing is dropped; this was verified against a clone
-> of a populated database.
+> It runs the migration files and backfills data in one step, and is safe to
+> re-run. A database created before migration files existed (with `prisma db
+> push`) is detected and baselined automatically. Your data is preserved.
 
 `main-local`'s Prisma schema needs to be applied to `shopms_local`. Easiest path:
 
 ```bash
 cd main-local
 npm install
-npx prisma db push          # creates tables based on prisma/schema.prisma
-npx prisma generate
+./scripts/upgrade-db.sh     # applies prisma/migrations and generates the client
 ```
 
 > If `npm install` fails on `better-sqlite3` or other native modules, run `npx electron-rebuild` once.
