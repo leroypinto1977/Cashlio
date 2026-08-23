@@ -19,6 +19,7 @@ FILES=(
   "src/shared/units.ts"
   "src/shared/credit.ts"
   "src/shared/procurement.ts"
+  "src/shared/warranty.ts"
   "src/renderer/src/lib/receipt.ts"
 )
 
