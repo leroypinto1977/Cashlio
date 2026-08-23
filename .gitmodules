@@ -1,0 +1,25 @@
+# The three apps are separate repositories, tracked here at the commits that
+# work together. Without this file a fresh clone of the parent produced three
+# empty directories and a project that only built on the machine it was
+# written on.
+#
+#   git clone --recurse-submodules <parent>
+#
+# or, in a clone that already exists:
+#
+#   git submodule update --init --recursive
+
+[submodule "admin-saas"]
+	path = admin-saas
+	url = https://github.com/leroypinto1977/Cashlio-admin-saas.git
+	branch = main
+
+[submodule "main-local"]
+	path = main-local
+	url = https://github.com/leroypinto1977/Cashlio-main-local.git
+	branch = main
+
+[submodule "billing-client"]
+	path = billing-client
+	url = https://github.com/leroypinto1977/Cashlio-billing-client.git
+	branch = main
