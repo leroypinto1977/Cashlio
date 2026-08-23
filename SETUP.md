@@ -198,6 +198,17 @@ A quick smoke list — the surface area is large, so just exercise the main flow
 - [ ] **Receivables** (new tab) — the debtor appears with ageing; record a payment
       and watch the balance clear
 - [ ] Try voiding a bill you have collected against — it should be refused
+- [ ] **Batch-accurate returns** — receive two batches of one product at different
+      rates, sell enough to span both, then return most of it. Each batch should get
+      back exactly what it gave (check under Products → the product's batches)
+- [ ] Return something as **Damaged** — the customer is refunded but stock must NOT
+      go back up
+- [ ] **Orders** (new tab) — a product below its minimum should appear under "Needs
+      reordering"; create the order, place it, then receive part of it. The order
+      should stay open showing what is still pending
+- [ ] Receive the rest — the order should close as Received
+- [ ] On a terminal, use the **Returns** tab to take something back; the credit note
+      should print
 
 ---
 
