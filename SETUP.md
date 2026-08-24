@@ -173,7 +173,17 @@ SAAS_API_URL=http://localhost:3000
 2. **Activate** screen: paste the license key you created in Prisma Studio (e.g. `TEST-LICENSE-001`).
 3. **Setup profile** screen: shop name, address, GST settings.
 4. **Till account** (optional, on the same screen): create a cashier login. Without one you would have to type the manager password into every till, which defeats the point of having roles at all. You can add more later under Settings.
-5. You should land on the manager dashboard. The Express API is now running on `http://127.0.0.1:52001`.
+5. You should land on the manager dashboard. The branch API is now running on
+   `https://127.0.0.1:52001`.
+
+   It serves **HTTPS**, using a certificate the machine issues itself on first
+   boot into its `userData` folder. There is no certificate authority in a
+   shop, so tills don't check it the way a browser checks a bank — each till
+   is shown the fingerprint when it is paired and accepts that certificate and
+   nothing else from then on. The manager app shows the same fingerprint under
+   **Settings → Devices**, and pairing a till asks whoever is doing it to
+   compare the two. That comparison is what stops another machine on the shop
+   Wi-Fi answering in the server's place while a till is being set up.
 
 The app generates its own session secret on first launch and stores it at
 `~/Library/Application Support/main-local/session.key`. Nothing secret ships
@@ -182,7 +192,9 @@ inside the app any more, so each installation is independent.
 **Verify the API is up** (in another terminal):
 
 ```bash
-curl http://127.0.0.1:52001/api/v1/system/status
+# -k because the certificate is self-issued; a till checks it by fingerprint
+# instead, which curl has no way to do here.
+curl -k https://127.0.0.1:52001/api/v1/system/status
 # Returns { ok: true, ... }
 ```
 
