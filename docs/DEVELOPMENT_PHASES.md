@@ -143,15 +143,26 @@ purpose of the first one.*
   Alt with backspace drops it. Function keys and Alt only, so a cashier typing
   a product name can never trigger a command. The keys are shown on screen.
 
-### Phase C — "Profit" means profit
+### Phase C — "Profit" means profit ✅ *complete*
 
-*The analytics screen is honest about being gross margin. It is still not the
+*The analytics screen was honest about being gross margin. It was still not the
 number a shopkeeper thinks they are reading.*
 
-- **Expenses** — rent, power, wages, transport, and the rest — recorded and
-  categorised, so the margin figure can be stated net. This is the one item
-  carried forward from the original plan's Phase 7, because it makes something
-  already shipped tell the truth.
+- ✅ **Expenses.** Recorded against a controlled list of categories, split into
+  costs that are there whether or not the shop sells anything and ones that
+  move with trade. Net profit is worked out against the cost *after* the GST a
+  registered shop reclaims — counting that tax as cost would report a business
+  as losing money it never spent, and the revenue it is compared with is
+  already ex-GST.
+- ✅ **Cash out of the till.** An expense paid from the drawer comes off
+  expected cash and is named in the day book, so what used to surface as "the
+  drawer is ₹250 short" now reads as "the courier was paid ₹250". Only cash can
+  be marked that way.
+- ✅ **Two things that would otherwise mislead.** A month of fixed cost recorded
+  on one day makes that day look catastrophic, so the screen says how much of
+  the period's cost is monthly. Recurring costs are pointed at, never created —
+  a rent figure that quietly repeated itself after the rent went up is worse
+  than a missing one.
 
 ### Phase D — The backup is real
 
