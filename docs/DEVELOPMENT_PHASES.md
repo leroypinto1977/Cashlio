@@ -97,33 +97,51 @@ complaints, and 31 more driving the actual screens.
 Ordered by what stops a shop from running on this, not by what is interesting
 to build.
 
-### Phase A — The shop can meet its obligations
+### Phase A — The shop can meet its obligations ✅ *complete*
 
 *Without this, the shop needs a second system to stay legal, which defeats the
 purpose of the first one.*
 
-- **HSN codes on products.** A GST invoice above the turnover threshold must
-  carry them, and GSTR-1 cannot be filed without them. The field does not
-  exist today. Everything else the return needs — taxable value, the tax heads,
-  place of supply — is already stored per line.
-- **GSTR-1 export.** B2B and B2C summaries, HSN summary, credit notes, in the
-  shape the portal accepts. The data is all there; nothing gets it out.
-- **Day book and cash close.** At the end of trading somebody counts the drawer
-  against what the system says. Money-collected-by-tender exists on the
-  analytics screen; a day-close flow that reconciles and records the difference
-  does not.
+- ✅ **HSN codes on products.** A GST invoice above the turnover threshold must
+  carry them, and GSTR-1 cannot be filed without them. The field now exists on
+  the product, is snapshotted onto every bill line at the moment of sale, and
+  is validated as 4, 6 or 8 digits. Credit notes carry the code the original
+  line carried.
+- ✅ **GSTR-1 export.** `GET /api/v1/reports/gstr1` builds B2B, B2CL, B2CS,
+  CDNR/CDNUR, the HSN summary and the document series, with `?format=portal`
+  for upload. The GST return screen leads with a readiness panel, because a
+  return nobody looked at is how a wrong one gets filed.
+- ✅ **Day book and cash close.** Expected cash — opening float plus the day's
+  cash payments less its cash refunds — sits beside what was counted, and the
+  difference is recorded with a reason. This needed refunds to be written down
+  as money moving in the first place, which they were not: returns against a
+  paid bill, and exchanges where the replacement is cheaper, now record cash
+  going back. Returns against an unpaid bill cancel debt and move no money.
+  A day can only be counted once, and the figures freeze at the count.
 
-### Phase B — The counter works at counter speed
+### Phase B — The counter works at counter speed ✅ *complete*
 
 *A shop with a queue does not tolerate a slow till.*
 
-- **Barcodes.** The billing search already says *"Scan barcode or search by
-  name / item code"* — but there is no barcode field on a product, so a
-  scanner types a number that matches nothing. Either add the field and the
-  lookup, or stop promising it.
-- **Thermal receipt printing.** Printing goes through the OS dialog today. A
-  counter printer wants a direct path and a paper size that fits.
-- **Keyboard-first billing.** A cashier at speed should not need the mouse.
+- ✅ **Barcodes.** The search box promised scanning and there was no barcode
+  field, so a scanner typed a number that matched nothing. Codes are a table
+  rather than a column, because the same item genuinely carries more than one:
+  a manufacturer changes its EAN between runs, and the alternative — a
+  duplicate product for the second code — splits one thing's stock and history
+  in two. Printed GTINs are check-digit verified, so a mistyped one is refused
+  with the digit it should have ended in rather than becoming a code that
+  scans to nothing. The terminal answers scans from its own mirror, so the
+  scanner keeps working when the LAN does not.
+- ✅ **Thermal receipt printing.** A printer is chosen per machine and receipts
+  go straight to it instead of stopping at the OS dialog. The page is cut to
+  the receipt — a till roll has no page length, so the height is measured from
+  the rendered content rather than fixed. 80mm and 58mm rolls both lay out to
+  the printable strip rather than the paper width, which is what stops the
+  first and last character being shaved off every line.
+- ✅ **Keyboard-first billing.** F2 search, F4 customer, F6 amount, F9 collect;
+  Alt with the arrows picks a line, Alt with plus/minus changes its quantity,
+  Alt with backspace drops it. Function keys and Alt only, so a cashier typing
+  a product name can never trigger a command. The keys are shown on screen.
 
 ### Phase C — "Profit" means profit
 

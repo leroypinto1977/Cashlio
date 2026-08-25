@@ -21,6 +21,9 @@ FILES=(
   "src/shared/procurement.ts"
   "src/shared/warranty.ts"
   "src/renderer/src/lib/receipt.ts"
+  "src/main/printing.ts"
+  "src/renderer/src/components/ReceiptPrinterSettings.tsx"
+  "src/renderer/src/lib/billingShortcuts.tsx"
 )
 
 MODE="${1:-sync}"
