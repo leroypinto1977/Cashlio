@@ -97,6 +97,12 @@ complaints, and 31 more driving the actual screens.
 Ordered by what stops a shop from running on this, not by what is interesting
 to build.
 
+**Phases A through D are closed.** What is left is Phase E, which is held
+rather than planned, and one engineering item named at the end of it. A shop
+can trade on what is built today: it can file its GST return, count its
+drawer, scan and print at counter speed, state its profit net of what it costs
+to run, and — as of D — actually get its data back.
+
 ### Phase A — The shop can meet its obligations ✅ *complete*
 
 *Without this, the shop needs a second system to stay legal, which defeats the
@@ -164,12 +170,28 @@ number a shopkeeper thinks they are reading.*
   a rent figure that quietly repeated itself after the rent went up is worse
   than a missing one.
 
-### Phase D — The backup is real
+### Phase D — The backup is real ✅ *complete*
 
 *An untested backup is not a backup.*
 
-- A restore path, exercised. Backups have run twice a day for months and
-  nothing has ever read one back.
+- ✅ **The backups were never running.** Prisma's connection string ends in
+  `?schema=public`, and libpq refuses a URL carrying a parameter it does not
+  recognise rather than ignoring it. `DATABASE_URL` was handed to `pg_dump`
+  untouched, so every scheduled backup exited non-zero, wrote no file, and left
+  one line in a log. Prisma-only parameters are now stripped before any
+  Postgres tool sees the URL.
+- ✅ **A manifest beside every dump** — exact row counts at the moment it was
+  taken, a SHA-256, and the migration it came from. Without one a dump can only
+  be checked for being readable, never for being complete, and the failure that
+  matters most is the one that looks fine.
+- ✅ **It reads itself back.** Every backup is verified as it is written, and
+  once a week the newest is restored into a throwaway database and what comes
+  back is counted. The result is recorded beside the backups, not in the
+  database — the database is the thing being tested.
+- ✅ **A restore that rehearses first.** Verify, restore into a scratch database,
+  dump what is about to be replaced, and only then replace it. This goes wrong
+  when somebody restores in a panic and learns the file was empty after the
+  original is gone.
 
 ### Phase E — Only if the business actually needs it
 
